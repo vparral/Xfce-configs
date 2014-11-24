@@ -1,0 +1,163 @@
+# Conky settings #
+background yes
+update_interval 1
+double_buffer yes
+no_buffers yes
+imlib_cache_size 10
+
+# Window specifications #
+alignment middle_right
+gap_x 10
+gap_y -50
+minimum_size 268 620
+maximum_width 268
+own_window yes
+own_window_type override  # other options are: override/normal/desktop/panel
+own_window_transparent yes
+own_window_hints undecorate,sticky,skip_taskbar,skip_pager,below
+border_inner_margin 0
+border_outer_margin 0
+#alignment middle_middle
+#own_window_argb_visual yes
+#own_window_argb_value 0
+
+# Graphics settings #
+draw_shades no
+default_shade_color 000000
+draw_outline no
+default_outline_color 000000
+draw_borders no
+draw_graph_borders yes
+default_graph_size 26 80
+show_graph_scale no
+show_graph_range no
+
+# Text settings #
+use_xft yes
+xftalpha 0
+xftfont Droid Sans:size=8
+text_buffer_size 256
+override_utf8_locale yes
+
+# Useful shortenings #
+short_units yes
+pad_percents 2
+top_name_width 7
+
+# Color scheme #
+default_color 336699
+color1 336699
+color2 000000
+color3 FFFFFF
+color4 6598CB
+color5 666666
+color6 CB6565
+color7 DDDDDD
+
+lua_load ~/.conky/clock_only_rings_small.lua
+lua_draw_hook_pre clock_rings 
+
+TEXT
+# Various images #
+${execi 1800 curl -s "http://weather.yahooapis.com/forecastrss?p=90660" -o ~/.cache/weather.xml}
+${image ~/.conky/weather/top-bg-a.png -p 19,130 -s 230x61}\
+${image ~/.conky/weather/fav-color.png -p 20,191 -s 228x86}\
+${execi 1800 cp -f ~/.conky/icons/$(grep "yweather:condition" ~/.cache/weather.xml | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==1').png ~/.cache/weather-n.png}${image ~/.cache/weather-n.png -p 80,191 -s 80x80}\
+${image ~/.conky/weather/border-a.png -p 19,191 -s 230x86}\
+${image ~/.conky/weather/border-2.png -p 19,191 -s 230x86}\
+${image ~/.conky/weather/bg-1-a.png -p 19,277 -s 230x86}\
+${image ~/.conky/weather/bg-2-a.png -p 19,363 -s 230x405}\
+${image ~/.conky/weather/bg-3-a.png -p 19,720 -s 230x111}\
+${image ~/.conky/weather/separator-v.png -p 95,285 -s 1x76}\
+${image ~/.conky/weather/separator-v.png -p 172,285 -s 1x76}\
+${image ~/.conky/weather/separator-h.png -p 33,369 -s 202x1}\
+${image ~/.conky/weather/separator-h.png -p 33,468 -s 202x1}\
+${image ~/.conky/weather/separator-h.png -p 33,546 -s 202x1}\
+${image ~/.conky/weather/separator-h.png -p 33,584 -s 202x1}\
+${image ~/.conky/weather/separator-h.png -p 33,650 -s 202x1}\
+${image ~/.conky/weather/separator-h.png -p 33,714 -s 202x1}\
+${image ~/.conky/weather/separator-h.png -p 33,790 -s 202x1}\
+${image ~/.conky/clock.png -p 65,5 -s 118x118}\
+\
+\
+# The days of the forecast #
+\
+${color1}${voffset 272}${alignc 77}${execi 1800 grep "yweather:forecast" ~/.cache/weather.xml | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==2' | tr '[a-z]' '[A-Z]'}${color}
+${color1}${voffset -10}${alignc}${execi 1800 grep "yweather:forecast" ~/.cache/weather.xml | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==3' | tr '[a-z]' '[A-Z]'}${color}
+${color1}${voffset -10}${alignc -77}${execi 1800 grep "yweather:forecast" ~/.cache/weather.xml | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==4' | tr '[a-z]' '[A-Z]'}${color}
+\
+# The temperatures of the forecast #
+\
+${color1}${voffset 51}${alignc 77}${execi 1800 grep "yweather:forecast" ~/.cache/weather.xml | grep -o "high=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==2'}°/${execi 300 grep "yweather:forecast" ~/.cache/weather.xml | grep -o "low=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==2'}°${color}
+${color1}${voffset -10}${alignc}${execi 1800 grep "yweather:forecast" ~/.cache/weather.xml | grep -o "high=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==3'}°/${execi 300 grep "yweather:forecast" ~/.cache/weather.xml | grep -o "low=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==3'}°${color}
+${color1}${voffset -10}${alignc -77}${execi 1800 grep "yweather:forecast" ~/.cache/weather.xml | grep -o "high=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==4'}°/${execi 300 grep "yweather:forecast" ~/.cache/weather.xml | grep -o "low=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==4'}°${color}
+\
+# The "conditions" section of the conky #
+\
+${goto 30}${voffset -172}${font Droid Sans :size=36}${color3}${execi 1800 grep "yweather:condition" ~/.cache/weather.xml | grep -o "temp=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*"}°${font}${color}
+${goto 30}${voffset 14}${font Droid Sans :size=12}${color3}${execi 1800 grep "yweather:condition" ~/.cache/weather.xml | grep -o "text=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*"}${font}${color}
+${color3}${alignr 52}${voffset -73}${execi 1800 grep "yweather:atmosphere" ~/.cache/weather.xml | grep -o "pressure=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*"} ${execi 1800 grep "yweather:units" ~/.cache/weather.xml | grep -o "pressure=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*"}
+${color3}${alignr 52}${voffset 7}${execi 1800 grep "yweather:atmosphere" ~/.cache/weather.xml | grep -o "humidity=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*"} %${color}
+${color3}${alignr 52}${voffset 7}${execi 1800 grep "yweather:wind" ~/.cache/weather.xml | grep -o "speed=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*"} ${execi 1800 grep "yweather:units" ~/.cache/weather.xml | grep -o "speed=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*"}${color}
+\
+${image ~/.conky/weather/pressure.png -p 224,195 -s 16x16}\
+${image ~/.conky/weather/humidity.png -p 224,215 -s 16x16}\
+${image ~/.conky/weather/wind-2.png -p 224,236 -s 16x16}\
+${execi 1800 cp -f ~/.conky/icons/$(grep "yweather:forecast" ~/.cache/weather.xml | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==2').png ~/.cache/weather-1.png}${image ~/.cache/weather-1.png -p 37,300 -s 40x40}\
+${execi 1800 cp -f ~/.conky/icons/$(grep "yweather:forecast" ~/.cache/weather.xml | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==3').png ~/.cache/weather-2.png}${image ~/.cache/weather-2.png -p 114,300 -s 40x40}\
+${execi 1800 cp -f ~/.conky/icons/$(grep "yweather:forecast" ~/.cache/weather.xml | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==4').png ~/.cache/weather-3.png}${image ~/.cache/weather-3.png -p 191,300 -s 40x40}${font}\
+${goto 180}${voffset 8}${color7}${font Droid Sans :size=6}UPDATED: ${execi 1800 ls -l ~/.cache/weather.xml | grep -o "[*0-9][*0-9]:[*0-9][*0-9]"}${font}${color}
+# Clock + calendar #
+\
+${voffset -120}${font Droid Sans Mono :size=28}${alignc}${time %H:%M}${font}
+${font Droid Sans :size=10}${alignc}${color5}${time %A, %d %B %Y}${font}${color}
+\
+##############
+# - SYSTEM - #
+##############
+${voffset 188}${goto 30}${color2}SYSTEM${color}
+${goto 30}Hostname:     ${goto 150}${nodename}
+${goto 30}System:       ${goto 150}${pre_exec cat /etc/issue.net}
+${goto 30}Architecture:       ${goto 150}$machine
+${goto 30}Kernel:       ${goto 150}${execi 1000 uname -r | sed -e 's/-generic//'}
+${goto 30}Uptime:       ${goto 150}${uptime} 
+${goto 30}Load Average: ${goto 150}$loadavg
+${voffset 20}${goto 30}${color2}CPU${color}
+${goto 30}${execi 1000 cat /proc/cpuinfo | grep 'model name' | sed -e 's/model name.*: //' | sed -e 's/(TM)//' | sed -e 's/(R)//' | sed -e 's/2.20GHz//' | uniq}${freq_g dyn} Ghz 
+${goto 30}Core 1: ${hwmon 1 temp 1}°C ${cpu cpu1}% ${goto 150}${cpubar cpu1 8,70}
+${goto 30}Core 2: ${hwmon 1 temp 2}°C ${cpu cpu2}% ${goto 150}${cpubar cpu2 8,70}
+${goto 30}Core 3: ${hwmon 1 temp 3}°C ${cpu cpu3}% ${goto 150}${cpubar cpu3 8,70}
+${goto 30}Core 4: ${hwmon 1 temp 4}°C ${cpu cpu4}% ${goto 150}${cpubar cpu4 8,70}
+\
+##############
+# - MEMORY - #
+##############
+# |--MEM
+${voffset 13}${goto 30}${color2}MEMORY${color} 
+${goto 30}$memperc% ${goto 150}${membar 8,70}
+${goto 30}Used: $mem ${goto 150}Total: $memmax 
+${voffset 5}${goto 30}${color2}SYSTEM USAGE${color}
+${goto 30}PROCESS${goto 150}CPU${goto 195}RAM
+${goto 30}${top name 1} ${goto 150}${top cpu 1}${goto 190}${top mem 1}
+${goto 30}${top name 2} ${goto 150}${top cpu 2}${goto 190}${top mem 2}
+${goto 30}${top name 3} ${goto 150}${top cpu 3}${goto 190}${top mem 3}
+\
+##########
+# - HD - #
+##########
+${voffset 10}${goto 30}${color2}HDD${color}
+# |--HD default
+${goto 30}/ ${goto 80}${fs_used_perc /}%${goto 150}${fs_bar 8,70 /}
+${goto 30}Used: ${fs_used /} ${goto 150}Free: ${fs_free /}
+${goto 30}/home ${goto 80}${fs_used_perc /home}%${goto 150}${fs_bar 8,70 /home}
+${goto 30}Used: ${goto 80}${fs_used /home} ${goto 150}Free: ${fs_free /home}
+\
+###############
+# - NETWORK - #
+###############
+${voffset 10}${goto 30}${color2}WIRELESS NETWORK${color}
+${goto 30}Up:${totalup wlp4s0}${goto 150}Down:${totaldown wlp4s0}
+${goto 30}Upload: ${upspeed wlp4s0} ${goto 150}${upspeedgraph wlp4s0 8,70}
+${goto 30}Download: ${downspeed wlp4s0} ${goto 150}${downspeedgraph wlp4s0 8,70}
+${goto 30}IP for wlp4s0: ${goto 150}${addr wlp4s0}
+${goto 30}${wireless_essid wlp4s0}${goto 150}${wireless_link_qual_perc wlp4s0}%\
