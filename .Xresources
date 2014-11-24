@@ -1,0 +1,32 @@
+!Xresources file
+
+URxvt*termName: screen-256color
+
+URxvt*loginShell: true
+
+!set URsvt window size on startup
+URxvt*geometry: 90x40
+
+!set URxvt transparency (no separate compositor)
+!URxvt*transparent: true
+
+!set URxvt transparency level (0-99 darkens, 101-200 lightens)
+!no separate compositor
+!URxvt*shading: 150
+
+!tint the background a specified color
+!URxvt*tintColor: #151515
+
+!set URxvt transparency and background (compositing wm or sys package)
+URxvt.depth: 32
+URxvt.background: [75]#151515
+
+!set URxvt text color
+URxvt*foreground: Cyan3
+
+!set URxvt scrollbar on/off
+URxvt.scrollBar: false
+
+!set URxvt font
+URxvt.font: xft:FiraMono:size=9
+URxvt.letterSpace: -1
